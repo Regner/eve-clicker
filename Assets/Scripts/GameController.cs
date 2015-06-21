@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
 
 	// Public Variables
 
@@ -19,38 +20,45 @@ public class GameController : MonoBehaviour {
 	// UI Stuff
 	public Text istText;
 	public Text curreLevelText;
+    public List<WeaponUpgradeController> weaponUpgradeControllers;
+
+    // Level information
+    public int currentLevel;
 
 	// Private Variables
-	private long isk;
-	private int currentLevel;
+	private ulong currentIsk;
 	private List<GameObject> spawnedEnemies;
 	
-	void Start () {
-		spawnedEnemies = new List<GameObject> ();
-
-		// Testing shit, go away
-		isk = 100000000000000;
+	void Start ()
+    {
+        currentIsk = 10;
+		spawnedEnemies = new List<GameObject>();
+        weaponUpgradeControllers = new List<WeaponUpgradeController>();
 
 		SpawnPlayer ();
 		IncrementLevel ();
 	}
 
-	void Update () {
+	void Update ()
+    {
 		UpdateISKText ();
 	}
 
-	void IncrementLevel () {
+	void IncrementLevel ()
+    {
 		currentLevel += 1;
 
 		UpdateLevelText ();
 		SpawnEnemies ();
 	}
 
-	void SpawnPlayer () {
+	void SpawnPlayer ()
+    {
 		Instantiate (player, playerSpawnPoint.position, playerSpawnPoint.rotation);
 	}
 	
-	void SpawnEnemies () {
+	void SpawnEnemies ()
+    {
 		// We should never spawn enemies unless all are dead so confirm that first.
 		if (spawnedEnemies.Count == 0) {
 			foreach (Transform spawnPoint in enemySpawnPoints) {
@@ -60,23 +68,51 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	void UpdateISKText () {
-		istText.text = "ISK:\n" + isk;
+	void UpdateISKText ()
+    {
+		istText.text = "ISK:\n" + currentIsk;
 	}
 
-	void UpdateLevelText () {
+	void UpdateLevelText ()
+    {
 		curreLevelText.text = "Level:\n" + currentLevel;
 	}
 
-	public int GetDamageAmmount () {
-		return baseDamage;
+	public ulong GetDamageAmmount ()
+    {
+        ulong damageAmount = 0;
+
+        foreach (WeaponUpgradeController weaponUpgrade in weaponUpgradeControllers)
+        {
+            damageAmount += weaponUpgrade.actualDamageAmount;
+        }
+
+        return damageAmount;
 	}
 
-	public void RemoveEnemy (GameObject enemyToDie) {
+	public void RemoveEnemy (GameObject enemyToDie)
+    {
 		spawnedEnemies.Remove (enemyToDie);
 
 		if (spawnedEnemies.Count <= 0) {
 			IncrementLevel ();
 		}
 	}
+
+    public void AddISK(ulong iskToAdd)
+    {
+        currentIsk += iskToAdd;
+        UpdateISKText ();
+    }
+
+    public void RemoveISK(ulong iskToRemove)
+    {
+        currentIsk -= iskToRemove;
+        UpdateISKText();
+    }
+
+    public ulong CurrentISK()
+    {
+        return currentIsk;
+    }
 }

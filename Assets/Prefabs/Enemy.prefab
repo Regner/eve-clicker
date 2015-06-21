@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469a97dba398c2c4faff281db9e01c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  baseHealth: 5
+  baseISK: 2
 --- !u!212 &21298790
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -186,6 +187,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_FontSize
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseISK
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

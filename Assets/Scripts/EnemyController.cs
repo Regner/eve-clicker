@@ -3,39 +3,63 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour {
 	
-	public int health;
+	public int baseHealth;
+    public int baseISK;
+
+    private ulong actualHealth;
+    private ulong actualISK;
 
 	private GameController gameControllerScript;
 
-	void Start () {
+	void Start ()
+    {
 		GameObject gameController = GameObject.Find ("Game Controller");
 		gameControllerScript = gameController.GetComponent<GameController> ();
-		
+
+        CalculateEnempyHP();
+        CalculateEnemyISK();
+
 		UpdateHealthText ();
 	}
 	
-	void OnMouseUp () {
-		int damage = gameControllerScript.GetDamageAmmount();
+	void OnMouseUp ()
+    {
+		ulong damage = gameControllerScript.GetDamageAmmount();
 		DamageTaken (damage);
 	}
 
-	void DamageTaken (int damage) {
-		health -= damage;
-		Debug.Log ("Enemy lost " + damage + " HP. Now has " + health + " HP remaining.");
+	void DamageTaken (ulong damage)
+    {
 
-		if (health <= 0) {
-			Destroy (gameObject);
+        if (damage < actualHealth)
+        {
+            actualHealth -= damage;
+            UpdateHealthText();
 		}
-
-		UpdateHealthText ();
+        else
+        {
+            Destroy(gameObject);
+        }
 	}
 
-	void UpdateHealthText () {
-		gameObject.GetComponentInChildren<TextMesh>().text = "" + health;
+	void UpdateHealthText ()
+    {
+        gameObject.GetComponentInChildren<TextMesh>().text = "" + actualHealth;
 	}
 
-	void OnDestroy () {
-		Debug.Log ("Health equal to or below 0. Death.");
+	void OnDestroy ()
+    {
 		gameControllerScript.RemoveEnemy (gameObject);
+        gameControllerScript.AddISK (actualISK);
 	}
+
+    void CalculateEnempyHP()
+    {
+        actualHealth = (uint)Mathf.Round(baseHealth * Mathf.Pow(1.5f, gameControllerScript.currentLevel - 1));
+    }
+
+    void CalculateEnemyISK()
+    {
+        actualISK = (ulong)Mathf.Round(baseISK * Mathf.Pow(1.15f, gameControllerScript.currentLevel - 1));
+    }
 }

@@ -41,7 +41,8 @@ public class WeaponUpgradeController : MonoBehaviour {
 
     ulong CalculateNextLevelDamage()
     {
-        return (ulong)Mathf.Round(baseDamageAmount * Mathf.Pow(damageUpgradePercentage, currentUpgradeLevel));
+        //return (ulong)Mathf.Round(baseDamageAmount * Mathf.Pow(damageUpgradePercentage, currentUpgradeLevel));
+        return actualDamageAmount + 1;
     }
 
     public void UpgradeWeaponLevel()
@@ -71,7 +72,7 @@ public class WeaponUpgradeController : MonoBehaviour {
 
     void UpdateNextLevelCostText()
     {
-        nextLevelCostText.text = CalculateUpgradeCost().ToString("D2");
+        nextLevelCostText.text = CalculateUpgradeCost().ToString();
     }
 
     void UpdateCurrentDamageText()

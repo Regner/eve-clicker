@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPrePurchased: 0
-  baseDamageAmount: 1
+  baseDamageAmount: 10
   baseUpgradeCost: 10
   actualDamageAmount: 0
   damageUpgradePercentage: 1.14999998
@@ -475,7 +475,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: baseDamageAmount
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
